@@ -1,24 +1,24 @@
-import { Question } from "../../enterprise/entities/question"
-import { QuestionsRepository } from "../repositories/questions-repository"
+import { Question } from '../../enterprise/entities/question'
+import { QuestionsRepository } from '../repositories/questions-repository'
 
 interface FetchRecentQuestionsUseCaseRequest {
-    page: number
+  page: number
 }
 
 interface FetchRecentQuestionsUseCaseResponse {
-    questions: Question[]
+  questions: Question[]
 }
 
 export class FetchRecentQuestionsUseCase {
-    constructor(private questionsRepository: QuestionsRepository) {}
+  constructor(private questionsRepository: QuestionsRepository) {}
 
-    async execute({
-        page
-    }: FetchRecentQuestionsUseCaseRequest): Promise<FetchRecentQuestionsUseCaseResponse> {
-        const questions = await this.questionsRepository.findManyRecent({ page })
+  async execute({
+    page,
+  }: FetchRecentQuestionsUseCaseRequest): Promise<FetchRecentQuestionsUseCaseResponse> {
+    const questions = await this.questionsRepository.findManyRecent({ page })
 
-        return {
-            questions,
-        }
+    return {
+      questions,
     }
+  }
 }
