@@ -5,6 +5,7 @@ interface DeleteQuestionUseCaseRequest {
   questionId: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface DeleteQuestionUseCaseResponse {}
 
 export class DeleteQuestionUseCase {
@@ -20,7 +21,7 @@ export class DeleteQuestionUseCase {
       throw new Error('Question not found')
     }
 
-    if (authorId != question.authorId.toString()) {
+    if (authorId !== question.authorId.toString()) {
       throw new Error('Not allowed.')
     }
 
