@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import { Either, left, right } from '@/core/either'
 import { AnswersRepository } from '../repositories/answers-repository'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-errors'
 
 interface DeleteAnswerUseCaseRequest {
   authorId: string
   answerId: string
 }
 
-interface DeleteAnswerUseCaseResponse {}
-
+type DeleteAnswerUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  {}
+>
 export class DeleteAnswerUseCase {
   constructor(private answersRepository: AnswersRepository) {}
 
@@ -17,15 +23,15 @@ export class DeleteAnswerUseCase {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {
-      throw new Error('Answer not found')
+      return left(new NotAllowedError())
     }
 
-    if (authorId != answer.authorId.toString()) {
+    if (authorId !== answer.authorId.toString()) {
       throw new Error('Not allowed.')
     }
 
     await this.answersRepository.delete(answer)
 
-    return {}
+    return right({})
   }
 }
